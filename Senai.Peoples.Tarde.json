@@ -1,0 +1,166 @@
+{
+	"info": {
+		"_postman_id": "62324b35-5836-491b-94b3-a81e4f2023f6",
+		"name": "Senai.Peoples.Tarde",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get.Listar",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\" : \"GodOfWar\",\n\t\"idGenero\" : \"3\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:52689/api/Funcionarios/Nome/Catarina",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52689",
+					"path": [
+						"api",
+						"Funcionarios",
+						"Nome",
+						"Catarina"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get.BuscarPorId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52689/api/Funcionarios/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52689",
+					"path": [
+						"api",
+						"Funcionarios",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post.Cadastrar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\" : \"Pedro\",\n\t\"sobrenome\" : \"Silva\",\n\t\"dataNascimento\" : \"2001/12/30 08:30:50\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:52689/api/Funcionarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52689",
+					"path": [
+						"api",
+						"Funcionarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put.AtualizarPorId",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nome\" : \"Tadeu\",\n\t\"sobrenome\" : \"Vitelli\",\n\t\"dataNascimento\" : \"2003/05/10 22:30:10\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:52689/api/Funcionarios/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52689",
+					"path": [
+						"api",
+						"Funcionarios",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete.Deletar",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52689/api/Funcionarios/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52689",
+					"path": [
+						"api",
+						"Funcionarios",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
