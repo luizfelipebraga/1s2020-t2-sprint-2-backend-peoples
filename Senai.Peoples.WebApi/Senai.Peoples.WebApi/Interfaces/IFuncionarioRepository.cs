@@ -40,5 +40,7 @@ namespace Senai.Peoples.WebApi.Interfaces
         /// <returns>Retorna um genero</returns>
         FuncionarioDomain BuscarPorId(int id);
 
+        List<FuncionarioDomain> BuscarPorNome(string nome);
+
     }
 }

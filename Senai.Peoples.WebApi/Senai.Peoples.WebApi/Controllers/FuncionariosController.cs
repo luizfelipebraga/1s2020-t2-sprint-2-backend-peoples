@@ -78,6 +78,15 @@ namespace Senai.Peoples.WebApi.Controllers
             return Ok(funcionarioBuscado);
         }
 
+        [HttpGet("Nome/{nome}")]
+        public IEnumerable <FuncionarioDomain> GetByNome(string nome)
+        {
+            Console.WriteLine();
+            Console.WriteLine(nome);
+            Console.WriteLine();
+            return funcionarioRepository.BuscarPorNome(nome);
+        }
+
         /// <summary>
         /// Atualiza um gênero existente passando o ID no recurso
         /// </summary>
@@ -85,6 +94,7 @@ namespace Senai.Peoples.WebApi.Controllers
         /// <param name="funcionarioAtualizado">Objeto gênero que será atualizado</param>
         /// <returns>Retorna um status code</returns>
         /// dominio/api/Generos/1
+        /// 
         [HttpPut("{id}")]
         public IActionResult PutIdUrl(int id, FuncionarioDomain funcionarioAtualizado)
         {

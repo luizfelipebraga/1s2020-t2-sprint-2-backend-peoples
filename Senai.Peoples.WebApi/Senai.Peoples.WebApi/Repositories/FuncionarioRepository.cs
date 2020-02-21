@@ -31,7 +31,7 @@ namespace Senai.Peoples.WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                string queryUpdate = "UPDATE Funcionarios SET Nome = @Nome, Sobrenome = @Sobrenome WHERE IdFuncionario = @ID";
+                string queryUpdate = "UPDATE Funcionarios SET Nome = @Nome, Sobrenome = @Sobrenome, DataNascimento = @DataNascimento WHERE IdFuncionario = @ID";
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
                 using (SqlCommand cmd = new SqlCommand(queryUpdate, con))
@@ -40,6 +40,8 @@ namespace Senai.Peoples.WebApi.Repositories
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.Parameters.AddWithValue("@Nome", funcionario.Nome);
                     cmd.Parameters.AddWithValue("@Sobrenome", funcionario.Sobrenome);
+                    cmd.Parameters.AddWithValue("@DataNascimento", funcionario.DataNascimento);
+
 
                     // Abre a conexão com o banco de dados
                     con.Open();
@@ -61,7 +63,7 @@ namespace Senai.Peoples.WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                string querySelectById = "SELECT IdFuncionario, Nome, Sobrenome FROM Funcionarios WHERE IdFuncionario = @ID";
+                string querySelectById = "SELECT * FROM Funcionarios WHERE IdFuncionario = @ID";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
@@ -85,10 +87,12 @@ namespace Senai.Peoples.WebApi.Repositories
                         FuncionarioDomain funcionario = new FuncionarioDomain
                         {
                             // Atribui à propriedade Idfuncionario o valor da coluna "Idfuncionario" da tabela do banco
-                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"]),
 
+                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"]),
+
+                            Sobrenome = rdr["Sobrenome"].ToString(),
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
-                            ,
                             Nome = rdr["Nome"].ToString()
                         };
 
@@ -100,6 +104,55 @@ namespace Senai.Peoples.WebApi.Repositories
                     return null;
                 }
             }
+        }
+
+        public List<FuncionarioDomain>BuscarPorNome (string nome)
+        {
+            List<FuncionarioDomain> funcionarios = new List<FuncionarioDomain>();
+            // Declara a conexão passando a string de conexão
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                // Declara a query que será executada
+                string querySelectById = "SELECT * FROM Funcionarios WHERE Nome Like '%@Nome%'";
+
+                // Abre a conexão com o banco de dados
+                con.Open();
+
+                // Declara o SqlDataReader fazer a leitura no banco de dados
+                SqlDataReader rdr;
+
+                // Declara o SqlCommand passando o comando a ser executado e a conexão
+                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                {
+                    // Passa o valor do parâmetro
+                    cmd.Parameters.AddWithValue("@Nome", nome);
+
+                    // Executa a query
+                    rdr = cmd.ExecuteReader();
+
+                    // Caso a o resultado da query possua registro
+                    if (rdr.Read())
+                    {
+                        // Cria um objeto funcionario
+                        FuncionarioDomain funcionario = new FuncionarioDomain
+                        {
+                            // Atribui à propriedade Idfuncionario o valor da coluna "Idfuncionario" da tabela do banco
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"]),
+
+                            Sobrenome = rdr["Sobrenome"].ToString(),
+                            // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
+                            Nome = rdr["Nome"].ToString(),
+
+                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
+                        };
+
+                        // Retorna o funcionario com os dados obtidos
+                        funcionarios.Add(funcionario);
+                    }
+                    // Caso o resultado da query não possua registros, retorna null
+                }
+            }
+        return funcionarios;
         }
 
         /// <summary>
@@ -121,7 +174,7 @@ namespace Senai.Peoples.WebApi.Repositories
                 // https://www.devmedia.com.br/sql-injection/6102
 
                 // Declara a query que será executada passando o valor como parâmetro, evitando assim os problemas acima
-                string queryInsert = "INSERT INTO Funcionarios(Nome,Sobrenome) VALUES (@Nome,@Sobrenome)";
+                string queryInsert = "INSERT INTO Funcionarios(Nome,Sobrenome,DataNascimento) VALUES (@Nome,@Sobrenome,@DataNascimento)";
 
                 // Declara o comando passando a query e a conexão
                 SqlCommand cmd = new SqlCommand(queryInsert, con);
@@ -129,6 +182,7 @@ namespace Senai.Peoples.WebApi.Repositories
                 // Passa o valor do parâmetro
                 cmd.Parameters.AddWithValue("@Nome", funcionario.Nome);
                 cmd.Parameters.AddWithValue("@Sobrenome", funcionario.Sobrenome);
+                cmd.Parameters.AddWithValue("@DataNascimento", funcionario.DataNascimento);
                 // Abre a conexão com o banco de dados
                 con.Open();
 
@@ -177,7 +231,7 @@ namespace Senai.Peoples.WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a instrução a ser executada
-                string querySelectAll = "SELECT IdFuncionario, Nome, Sobrenome from Funcionarios";
+                string querySelectAll = "SELECT * from Funcionarios";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
@@ -203,7 +257,11 @@ namespace Senai.Peoples.WebApi.Repositories
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
                             Nome = rdr["Nome"].ToString(),
 
-                            Sobrenome = rdr["Sobrenome"].ToString()
+                            Sobrenome = rdr["Sobrenome"].ToString(),
+
+                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
+
+                            
                         };
 
                         // Adiciona o funcionario criado à tabela funcionarios
