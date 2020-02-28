@@ -1,47 +1,47 @@
-﻿using Senai.Peoples.WebApi.Domains;
-using Senai.Peoples.WebApi.Interfaces;
+﻿using senai.Peoples.WebApi.Domains;
+using senai.Peoples.WebApi.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Senai.Peoples.WebApi.Repositories
+namespace senai.Peoples.WebApi.Repositories
 {
+    /// <summary>
+    /// Repositório dos Funcionários
+    /// </summary>
     public class FuncionarioRepository : IFuncionarioRepository
     {
         /// <summary>
         /// String de conexão com o banco de dados que recebe os parâmetros
-        /// Data Source - Nome do Servidor
-        /// initial catalog - Nome do Banco de Dados
-        /// integrated security=true - Faz a autenticação com o usuário do sistema
-        /// user Id=sa; pwd=sa@132 - Faz a autenticação com um usuário específico, passando o logon e a senha
         /// </summary>
-        //private string StringConexao = "Data Source=DESKTOP-NJ6LHN1\\SQLDEVELOPER; initial catalog=Filmes; integrated security=true;";
-        private string stringConexao = "Data Source=DEV301\\SQLEXPRESS; initial catalog=T_Peoples; user Id=sa; pwd=sa@132";
+        //private string stringConexao = "Data Source=DESKTOP-NJ6LHN1\\SQLDEVELOPER; initial catalog=Peoples; integrated security=true;";
+        private string stringConexao = "Data Source=DEV301\\SQLEXPRESS; initial catalog=Peoples; user Id=sa; pwd=sa@132";
 
         /// <summary>
-        /// Atualiza um gênero passando o id pelo recurso
+        /// Atualiza um funcionário existente
         /// </summary>
-        /// <param name="id">ID do gênero que será atualizado</param>
-        /// <param name="funcionario">Objeto gênero que será atualizado</param>
-        public void AtualizarIdUrl(int id, FuncionarioDomain funcionario)
+        /// <param name="id">ID do funcionário que será atualizado</param>
+        /// <param name="funcionarioAtualizado">Objeto funcionarioAtualizado que será atualizado</param>
+        public void Atualizar(int id, FuncionarioDomain funcionarioAtualizado)
         {
             // Declara a conexão passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                string queryUpdate = "UPDATE Funcionarios SET Nome = @Nome, Sobrenome = @Sobrenome, DataNascimento = @DataNascimento WHERE IdFuncionario = @ID";
+                string queryUpdate = "UPDATE Funcionarios " +
+                                     "SET Nome = @Nome, Sobrenome = @Sobrenome, DataNascimento = @DataNascimento " +
+                                     "WHERE IdFuncionario = @ID";
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
                 using (SqlCommand cmd = new SqlCommand(queryUpdate, con))
                 {
                     // Passa os valores dos parâmetros
                     cmd.Parameters.AddWithValue("@ID", id);
-                    cmd.Parameters.AddWithValue("@Nome", funcionario.Nome);
-                    cmd.Parameters.AddWithValue("@Sobrenome", funcionario.Sobrenome);
-                    cmd.Parameters.AddWithValue("@DataNascimento", funcionario.DataNascimento);
-
+                    cmd.Parameters.AddWithValue("@Nome", funcionarioAtualizado.Nome);
+                    cmd.Parameters.AddWithValue("@Sobrenome", funcionarioAtualizado.Sobrenome);
+                    cmd.Parameters.AddWithValue("@DataNascimento", funcionarioAtualizado.DataNascimento);
 
                     // Abre a conexão com o banco de dados
                     con.Open();
@@ -53,22 +53,83 @@ namespace Senai.Peoples.WebApi.Repositories
         }
 
         /// <summary>
-        /// Busca um gênero pelo ID
+        /// Lista todos os funcionários com os nomes completos
         /// </summary>
-        /// <param name="id">ID do gênero que será buscado</param>
-        /// <returns>Retorna um gênero buscado ou null caso não seja encontrado</returns>
+        /// <returns>Retorna uma lista de funcionários</returns>
+        public List<FuncionarioDomain> ListarNomeCompleto()
+        {
+            // Cria uma lista funcionarios onde serão armazenados os dados
+            List<FuncionarioDomain> funcionarios = new List<FuncionarioDomain>();
+
+            // Declara a SqlConnection passando a string de conexão
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                // Declara a instrução a ser executada
+                string querySelectAll = "SELECT IdFuncionario, CONCAT (Nome, ' ', Sobrenome), DataNascimento FROM Funcionarios";
+
+                // Outra forma
+                //string querySelectAll = "SELECT IdFuncionario, Nome, Sobrenome, DataNascimento FROM Funcionarios";
+
+                // Abre a conexão com o banco de dados
+                con.Open();
+
+                // Declara o SqlDataReader para receber os dados do banco de dados
+                SqlDataReader rdr;
+
+                // Declara o SqlCommand passando o comando a ser executado e a conexão
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
+                {
+
+                    // Executa a query e armazena os dados no rdr
+                    rdr = cmd.ExecuteReader();
+
+                    // Enquanto houver registros para serem lidos no rdr, o laço se repete
+                    while (rdr.Read())
+                    {
+                        // Instancia um objeto funcionario do tipo FuncionarioDomain
+                        FuncionarioDomain funcionario = new FuncionarioDomain
+                        {
+                            // Atribui à propriedade IdFuncionario o valor da coluna IdFuncionario da tabela do banco de dados
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
+
+                            // Atribui à propriedade Nome os valores das colunas Nome e Sobrenome da tabela do banco de dados
+                            ,Nome = rdr[1].ToString()
+
+                            // Outra forma
+                            //,Nome = rdr["Nome"].ToString() + ' ' + rdr["Sobrenome"].ToString()
+
+                            // Atribui à propriedade DataNascimento o valor da coluna DataNascimento da tabela do banco de dados
+                            ,DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
+                        };
+
+                        // Adiciona o filme criado à lista funcionarios
+                        funcionarios.Add(funcionario);
+                    }
+                }
+            }
+
+            // Retorna a lista de funcionarios
+            return funcionarios;
+        }
+
+        /// <summary>
+        /// Busca um funcionário através do ID
+        /// </summary>
+        /// <param name="id">ID do funcionário que será buscado</param>
+        /// <returns>Retorna um funcionário buscado</returns>
         public FuncionarioDomain BuscarPorId(int id)
         {
             // Declara a conexão passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                string querySelectById = "SELECT * FROM Funcionarios WHERE IdFuncionario = @ID";
+                string querySelectById = "SELECT IdFuncionario, Nome, Sobrenome, DataNascimento FROM Funcionarios" +
+                                        " WHERE IdFuncionario = @ID";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
 
-                // Declara o SqlDataReader fazer a leitura no banco de dados
+                // Declara o SqlDataReader para receber os dados do banco de dados
                 SqlDataReader rdr;
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
@@ -77,26 +138,29 @@ namespace Senai.Peoples.WebApi.Repositories
                     // Passa o valor do parâmetro
                     cmd.Parameters.AddWithValue("@ID", id);
 
-                    // Executa a query
+                    // Executa a query e armazena os dados no rdr
                     rdr = cmd.ExecuteReader();
 
-                    // Caso a o resultado da query possua registro
+                    // Caso o resultado da query possua registro
                     if (rdr.Read())
                     {
-                        // Cria um objeto funcionario
+                        // Instancia um objeto funcionario 
                         FuncionarioDomain funcionario = new FuncionarioDomain
                         {
-                            // Atribui à propriedade Idfuncionario o valor da coluna "Idfuncionario" da tabela do banco
-                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"]),
+                            // Atribui à propriedade IdFuncionario o valor da coluna "IdFuncionario" da tabela do banco
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
 
-                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"]),
-
-                            Sobrenome = rdr["Sobrenome"].ToString(),
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
-                            Nome = rdr["Nome"].ToString()
+                            ,Nome = rdr["Nome"].ToString()
+
+                            // Atribui à propriedade Sobrenome o valor da coluna "Sobrenome" da tabela do banco
+                            ,Sobrenome = rdr["Sobrenome"].ToString()
+
+                            // Atribui à propriedade DataNascimento o valor da coluna "DataNascimento" da tabela do banco
+                            ,DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
                         };
 
-                        // Retorna o funcionario com os dados obtidos
+                        // Retorna o funcionário buscado
                         return funcionario;
                     }
 
@@ -106,95 +170,99 @@ namespace Senai.Peoples.WebApi.Repositories
             }
         }
 
-        public List<FuncionarioDomain>BuscarPorNome (string nome)
+        /// <summary>
+        /// Busca uma lista de funcionários através do nome
+        /// </summary>
+        /// <param name="nome">Palavra-chave que será utilizada na busca</param>
+        /// <returns>Retorna uma lista de funcionários encontrados</returns>
+        public List<FuncionarioDomain> BuscarPorNome(string nome)
         {
+            // Cria uma lista funcionarios onde serão armazenados os dados
             List<FuncionarioDomain> funcionarios = new List<FuncionarioDomain>();
-            // Declara a conexão passando a string de conexão
+
+            // Declara a SqlConnection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
-                // Declara a query que será executada
-                string querySelectById = "SELECT * FROM Funcionarios WHERE Nome Like '%@Nome%'";
+                // Declara a instrução a ser executada
+                string querySelectAll = "SELECT IdFuncionario, Nome, Sobrenome, DataNascimento FROM Funcionarios" +
+                                        $" WHERE Nome LIKE '%{nome}%'";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
 
-                // Declara o SqlDataReader fazer a leitura no banco de dados
+                // Declara o SqlDataReader para receber os dados do banco de dados
                 SqlDataReader rdr;
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
-                using (SqlCommand cmd = new SqlCommand(querySelectById, con))
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
                 {
-                    // Passa o valor do parâmetro
-                    cmd.Parameters.AddWithValue("@Nome", nome);
 
-                    // Executa a query
+                    // Executa a query e armazena os dados no rdr
                     rdr = cmd.ExecuteReader();
 
-                    // Caso a o resultado da query possua registro
-                    if (rdr.Read())
+                    // Enquanto houver registros para serem lidos no rdr, o laço se repete
+                    while (rdr.Read())
                     {
-                        // Cria um objeto funcionario
+                        // Instancia um objeto funcionario do tipo FuncionarioDomain
                         FuncionarioDomain funcionario = new FuncionarioDomain
                         {
-                            // Atribui à propriedade Idfuncionario o valor da coluna "Idfuncionario" da tabela do banco
-                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"]),
+                            // Atribui à propriedade IdFuncionario o valor da coluna IdFuncionario da tabela do banco de dados
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
 
-                            Sobrenome = rdr["Sobrenome"].ToString(),
-                            // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
-                            Nome = rdr["Nome"].ToString(),
+                            // Atribui à propriedade Nome o valor da coluna Nome da tabela do banco de dados
+                            ,Nome = rdr["Nome"].ToString()
 
-                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
+                            // Atribui à propriedade Sobrenome o valor da coluna Sobrenome da tabela do banco de dados
+                            ,Sobrenome = rdr["Sobrenome"].ToString()
+
+                            // Atribui à propriedade DataNascimento o valor da coluna DataNascimento da tabela do banco de dados
+                            ,DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
                         };
 
-                        // Retorna o funcionario com os dados obtidos
+                        // Adiciona o filme criado à lista funcionarios
                         funcionarios.Add(funcionario);
                     }
-                    // Caso o resultado da query não possua registros, retorna null
                 }
             }
-        return funcionarios;
+
+            // Retorna a lista de funcionarios
+            return funcionarios;
         }
 
         /// <summary>
-        /// Cadastra um novo gênero
+        /// Cadastra um novo funcionário
         /// </summary>
-        /// <param name="funcionario">Objeto funcionario que será cadastrado</param>
-        public void Cadastrar(FuncionarioDomain funcionario)
+        /// <param name="novoFuncionario">Objeto novoFuncionario que será cadastrado</param>
+        public void Cadastrar(FuncionarioDomain novoFuncionario)
         {
-            // Declara a conexão passando a string de conexão
+            // Declara a SqlConnection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                // string queryInsert = "INSERT INTO funcionarios(Nome) VALUES ('" + funcionario.Nome + "')";
-                // Não usar dessa forma pois pode causar o efeito Joana D'arc
-                // Além de permitir SQL Injection
-                // Por exemplo
-                // "nome" : "')DROP TABLE Filmes--'"
-                // Ao tentar cadastrar o comando acima, irá deletar a tabela Filmes do banco de dados
-                // https://www.devmedia.com.br/sql-injection/6102
-
-                // Declara a query que será executada passando o valor como parâmetro, evitando assim os problemas acima
-                string queryInsert = "INSERT INTO Funcionarios(Nome,Sobrenome,DataNascimento) VALUES (@Nome,@Sobrenome,@DataNascimento)";
+                string queryInsert = "INSERT INTO Funcionarios(Nome, Sobrenome, DataNascimento) " +
+                                     "VALUES (@Nome, @Sobrenome, @DataNascimento)";
 
                 // Declara o comando passando a query e a conexão
-                SqlCommand cmd = new SqlCommand(queryInsert, con);
+                using (SqlCommand cmd = new SqlCommand(queryInsert, con))
+                {
+                    // Passa o valor do parâmetro
+                    cmd.Parameters.AddWithValue("@Nome", novoFuncionario.Nome);
+                    cmd.Parameters.AddWithValue("@Sobrenome", novoFuncionario.Sobrenome);
+                    cmd.Parameters.AddWithValue("@DataNascimento", novoFuncionario.DataNascimento);
 
-                // Passa o valor do parâmetro
-                cmd.Parameters.AddWithValue("@Nome", funcionario.Nome);
-                cmd.Parameters.AddWithValue("@Sobrenome", funcionario.Sobrenome);
-                cmd.Parameters.AddWithValue("@DataNascimento", funcionario.DataNascimento);
-                // Abre a conexão com o banco de dados
-                con.Open();
+                    // Abre a conexão com o banco de dados
+                    con.Open();
 
-                // Executa o comando
-                cmd.ExecuteNonQuery();
+                    // Executa o comando
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
 
         /// <summary>
-        /// Deleta um gênero através do seu ID
+        /// Deleta um funcionário existente
         /// </summary>
-        /// <param name="id">ID do gênero que será deletado</param>
+        /// <param name="id"></param>
         public void Deletar(int id)
         {
             // Declara a conexão passando a string de conexão
@@ -219,9 +287,9 @@ namespace Senai.Peoples.WebApi.Repositories
         }
 
         /// <summary>
-        /// Lista todos os gêneros
+        /// Lista todos os funcionários
         /// </summary>
-        /// <returns>Retorna uma lista de gêneros</returns>
+        /// <returns>Retorna uma lista de funcionários</returns>
         public List<FuncionarioDomain> Listar()
         {
             // Cria uma lista funcionarios onde serão armazenados os dados
@@ -231,40 +299,101 @@ namespace Senai.Peoples.WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a instrução a ser executada
-                string querySelectAll = "SELECT * from Funcionarios";
+                string querySelectAll = "SELECT IdFuncionario, Nome, Sobrenome, DataNascimento FROM Funcionarios";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
 
-                // Declara o SqlDataReader para percorrer a tabela do banco
+                // Declara o SqlDataReader para receber os dados do banco de dados
                 SqlDataReader rdr;
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
                 using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
                 {
-                    // Executa a query
+                    // Executa a query e armazena os dados no rdr
                     rdr = cmd.ExecuteReader();
 
-                    // Enquanto houver registros para ler, o laço se repete
+                    // Enquanto houver registros para serem lidos no rdr, o laço se repete
                     while (rdr.Read())
                     {
-                        // Cria um objeto funcionario do tipo funcionarioDomain
+                        // Instancia um objeto funcionario 
                         FuncionarioDomain funcionario = new FuncionarioDomain
                         {
-                            // Atribui à propriedade Idfuncionario o valor da primeira coluna da tabela do banco
-                            IdFuncionario = Convert.ToInt32(rdr[0]),
+                            // Atribui à propriedade IdFuncionario o valor da coluna "IdFuncionario" da tabela do banco
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
 
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
-                            Nome = rdr["Nome"].ToString(),
+                            ,Nome = rdr["Nome"].ToString()
 
-                            Sobrenome = rdr["Sobrenome"].ToString(),
+                            // Atribui à propriedade Sobrenome o valor da coluna "Sobrenome" da tabela do banco
+                            ,Sobrenome = rdr["Sobrenome"].ToString()
 
-                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
-
-                            
+                            // Atribui à propriedade DataNascimento o valor da coluna "DataNascimento" da tabela do banco
+                            ,DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
                         };
 
-                        // Adiciona o funcionario criado à tabela funcionarios
+                        // Adiciona o funcionario criado à lista funcionarios
+                        funcionarios.Add(funcionario);
+                    }
+                }
+            }
+
+            // Retorna a lista de funcionarios
+            return funcionarios;
+        }
+
+        /// <summary>
+        /// Lista todos os funcionários de maneira ordenada pelo nome
+        /// </summary>
+        /// <param name="ordem">String que define a ordenação (crescente ou descrescente)</param>
+        /// <returns>Retorna uma lista ordenada de funcionários</returns>
+        public List<FuncionarioDomain> ListarOrdenado(string ordem)
+        {
+            // Cria uma lista funcionarios onde serão armazenados os dados
+            List<FuncionarioDomain> funcionarios = new List<FuncionarioDomain>();
+
+            // Declara a SqlConnection passando a string de conexão
+            using (SqlConnection con = new SqlConnection(stringConexao))
+            {
+                // Declara a instrução a ser executada
+                string querySelectAll = "SELECT IdFuncionario, Nome, Sobrenome, DataNascimento " +
+                                        $"FROM Funcionarios ORDER BY Nome {ordem}";
+
+                // Abre a conexão com o banco de dados
+                con.Open();
+
+                // Declara o SqlDataReader para receber os dados do banco de dados
+                SqlDataReader rdr;
+
+                // Declara o SqlCommand passando o comando a ser executado e a conexão
+                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
+                {
+                    // Executa a query e armazena os dados no rdr
+                    rdr = cmd.ExecuteReader();
+
+                    // Enquanto houver registros para serem lidos no rdr, o laço se repete
+                    while (rdr.Read())
+                    {
+                        // Instancia um objeto funcionario 
+                        FuncionarioDomain funcionario = new FuncionarioDomain
+                        {
+                            // Atribui à propriedade IdFuncionario o valor da coluna "IdFuncionario" da tabela do banco
+                            IdFuncionario = Convert.ToInt32(rdr["IdFuncionario"])
+
+                            // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
+                            ,
+                            Nome = rdr["Nome"].ToString()
+
+                            // Atribui à propriedade Sobrenome o valor da coluna "Sobrenome" da tabela do banco
+                            ,
+                            Sobrenome = rdr["Sobrenome"].ToString()
+
+                            // Atribui à propriedade DataNascimento o valor da coluna "DataNascimento" da tabela do banco
+                            ,
+                            DataNascimento = Convert.ToDateTime(rdr["DataNascimento"])
+                        };
+
+                        // Adiciona o funcionario criado à lista funcionarios
                         funcionarios.Add(funcionario);
                     }
                 }

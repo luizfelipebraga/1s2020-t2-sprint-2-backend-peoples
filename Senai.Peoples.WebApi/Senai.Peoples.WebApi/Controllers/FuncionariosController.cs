@@ -2,151 +2,231 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Senai.Peoples.WebApi.Domains;
-using Senai.Peoples.WebApi.Interfaces;
-using Senai.Peoples.WebApi.Repositories;
+using senai.Peoples.WebApi.Domains;
+using senai.Peoples.WebApi.Interfaces;
+using senai.Peoples.WebApi.Repositories;
 
-namespace Senai.Peoples.WebApi.Controllers
+namespace senai.Peoples.WebApi.Controllers
 {
+    /// <summary>
+    /// Controller responsável pelos endpoints referentes aos funcionarios
+    /// </summary>
+    
+    // Define que o tipo de resposta da API será no formato JSON
+    [Produces("application/json")]
+
+    // Define que a rota de uma requisição será no formato domínio/api/NomeController
     [Route("api/[controller]")]
+
+    // Define que é um controlador de API
     [ApiController]
     public class FuncionariosController : ControllerBase
     {
         /// <summary>
-        /// Cria um objeto _generoRepository que irá receber todos os métodos definidos na interface
+        /// Cria um objeto _funcionarioRepository que irá receber todos os métodos definidos na interface
         /// </summary>
-        private IFuncionarioRepository funcionarioRepository { get; set; }
+        private IFuncionarioRepository _funcionarioRepository { get; set; }
 
         /// <summary>
         /// Instancia este objeto para que haja a referência aos métodos no repositório
         /// </summary>
         public FuncionariosController()
         {
-            funcionarioRepository = new FuncionarioRepository();
+            _funcionarioRepository = new FuncionarioRepository();
         }
 
         /// <summary>
-        /// Lista todos os gêneros
+        /// Lista todos os funcionarios
         /// </summary>
-        /// <returns>Retorna uma lista de gêneros</returns>
-        /// dominio/api/Generos
+        /// <returns>Retorna uma lista de funcionarios e um status code 200 - Ok</returns>
+        /// dominio/api/Funcionarios
+        /// 
+        [Authorize(Roles = "Comum")]
         [HttpGet]
-        public IEnumerable<FuncionarioDomain> Get()
+        public IActionResult Get()
         {
-            // Faz a chamada para o método .Listar();
-            return funcionarioRepository.Listar();
+            // Faz a chamada para o método .Listar()
+            // Retorna a lista e um status code 200 - Ok
+            return Ok(_funcionarioRepository.Listar());
         }
 
         /// <summary>
-        /// Cadastra um novo gênero
+        /// Cadastra um novo funcionário
         /// </summary>
-        /// <param name="novofuncionario">Objeto genero recebido na requisição</param>
-        /// <returns>Retorna um status code 201 (created)</returns>
-        /// dominio/api/Generos
+        /// <param name="novoFuncionario">Objeto novoFuncionario que será cadastrado</param>
+        /// <returns>Retorna os dados que foram enviados para cadastro e um status code 201 - Created</returns>
+        /// dominio/api/Funcionarios
+        /// 
+        [Authorize(Roles = "Comum")]
         [HttpPost]
-        public IActionResult Post(FuncionarioDomain novofuncionario)
+        public IActionResult Post(FuncionarioDomain novoFuncionario)
         {
+            if (novoFuncionario.Nome == null)
+            {
+                return BadRequest("O nome do funcionário é obrigatório!");
+            }
             // Faz a chamada para o método .Cadastrar();
-            funcionarioRepository.Cadastrar(novofuncionario);
+            _funcionarioRepository.Cadastrar(novoFuncionario);
 
-            // Retorna um status code 201 - Created
-            return StatusCode(201);
+            // Retorna o status code 201 - Created com a URI e o objeto cadastrado
+            return Created("http://localhost:5000/api/Funcionarios", novoFuncionario);
         }
 
         /// <summary>
-        /// Busca um gênero através do seu ID
+        /// Busca um funcionário através do seu ID
         /// </summary>
-        /// <param name="id">ID do gênero buscado</param>
-        /// <returns>Retorna um gênero buscado</returns>
-        /// dominio/api/Generos/1
+        /// <param name="id">ID do funcionário que será buscado</param>
+        /// <returns>Retorna um funcionário buscado ou NotFound caso nenhum seja encontrado</returns>
+        /// dominio/api/Funcionarios/1
+        /// 
+        [Authorize(Roles = "Comum")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            // Cria um objeto generoBuscado que irá receber o gênero buscado no banco de dados
-            FuncionarioDomain funcionarioBuscado = funcionarioRepository.BuscarPorId(id);
+            // Cria um objeto funcionarioBuscado que irá receber o funcionário buscado no banco de dados
+            FuncionarioDomain funcionarioBuscado = _funcionarioRepository.BuscarPorId(id);
 
-            // Verifica se nenhum gênero foi encontrado
-            if (funcionarioBuscado == null)
+            // Verifica se algum funcionário foi encontrado
+            if (funcionarioBuscado != null)
             {
-                // Caso não seja encontrado, retorna um status code 404 com a mensagem personalizada
-                return NotFound("Nenhum funcionario encontrado");
+                // Caso seja, retorna os dados buscados e um status code 200 - Ok
+                return Ok(funcionarioBuscado);
             }
 
-            // Caso seja encontrado, retorna o gênero buscado
-            return Ok(funcionarioBuscado);
-        }
-
-        [HttpGet("Nome/{nome}")]
-        public IEnumerable <FuncionarioDomain> GetByNome(string nome)
-        {
-            Console.WriteLine();
-            Console.WriteLine(nome);
-            Console.WriteLine();
-            return funcionarioRepository.BuscarPorNome(nome);
+            // Caso não seja, retorna um status code 404 - NotFound com a mensagem
+            return NotFound("Nenhum funcionário encontrado para o identificador informado");
         }
 
         /// <summary>
-        /// Atualiza um gênero existente passando o ID no recurso
+        /// Atualiza um funcionário existente
         /// </summary>
-        /// <param name="id">ID do gênero que será atualizado</param>
-        /// <param name="funcionarioAtualizado">Objeto gênero que será atualizado</param>
+        /// <param name="id">ID do funcionário que será atualizado</param>
+        /// <param name="funcionarioAtualizado">Objeto funcionarioAtualizado que será atualizado</param>
         /// <returns>Retorna um status code</returns>
-        /// dominio/api/Generos/1
+        /// dominio/api/Funcionarios/1
         /// 
+        [Authorize(Roles = "Administrador")]
         [HttpPut("{id}")]
-        public IActionResult PutIdUrl(int id, FuncionarioDomain funcionarioAtualizado)
+        public IActionResult Put(int id, FuncionarioDomain funcionarioAtualizado)
         {
-            // Cria um objeto generoBuscado que irá receber o gênero buscado no banco de dados
-            FuncionarioDomain funcionarioBuscado = funcionarioRepository.BuscarPorId(id);
+            // Cria um objeto funcionarioBuscado que irá receber o funcionário buscado no banco de dados
+            FuncionarioDomain funcionarioBuscado = _funcionarioRepository.BuscarPorId(id);
 
-            // Verifica se nenhum gênero foi encontrado
-            if (funcionarioBuscado == null)
+            // Verifica se algum funcionário foi encontrado
+            if (funcionarioBuscado != null)
             {
-                // Caso não seja encontrado, retorna NotFound com uma mensagem personalizada
-                // e um bool para representar que houve erro
-                return NotFound
-                    (
-                        new
-                        {
-                            mensagem = "Funcionario não encontrado",
-                            erro = true
-                        }
-                    );
+                // Tenta atualizar o registro
+                try
+                {
+                    // Faz a chamada para o método .Atualizar();
+                    _funcionarioRepository.Atualizar(id, funcionarioAtualizado);
+
+                    // Retorna um status code 204 - No Content
+                    return NoContent();
+                }
+                // Caso ocorra algum erro
+                catch (Exception erro)
+                {
+                    // Retorna BadRequest e o erro
+                    return BadRequest(erro);
+                }
+
             }
 
-            // Tenta atualizar o registro
-            try
-            {
-                // Faz a chamada para o método .AtualizarIdUrl();
-                funcionarioRepository.AtualizarIdUrl(id, funcionarioAtualizado);
-
-                // Retorna um status code 204 - No Content
-                return NoContent();
-            }
-            // Caso ocorra algum erro
-            catch (Exception erro)
-            {
-                // Retorna BadRequest e o erro
-                return BadRequest(erro);
-            }
+            // Caso não seja encontrado, retorna NotFound com uma mensagem personalizada
+            // e um bool para representar que houve erro
+            return NotFound
+                (
+                    new
+                    {
+                        mensagem = "Funcionário não encontrado",
+                        erro = true
+                    }
+                );
         }
 
         /// <summary>
-        /// Deleta um gênero passando o ID
+        /// Deleta um funcionário
         /// </summary>
-        /// <param name="id">ID do gênero que será deletado</param>
-        /// <returns>Retorna um status code com uma mensagem personalizada</returns>
-        /// dominio/api/Generos/1
+        /// <param name="id">ID do funcionário que será deletado</param>
+        /// <returns>Retorna um status code com uma mensagem de sucesso ou erro</returns>
+        /// dominio/api/Funcionarios/1
+        /// 
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            // Faz a chamada para o método .Deletar();
-            funcionarioRepository.Deletar(id);
+            // Cria um objeto funcionarioBuscado que irá receber o funcionário buscado no banco de dados
+            FuncionarioDomain funcionarioBuscado = _funcionarioRepository.BuscarPorId(id);
 
-            // Retorna um status code com uma mensagem personalizada
-            return Ok("Funcionario deletado");
+            // Verifica se o funcionário foi encontrado
+            if (funcionarioBuscado != null)
+            {
+                // Caso seja, faz a chamada para o método .Deletar()
+                _funcionarioRepository.Deletar(id);
+
+                // e retorna um status code 200 - Ok com uma mensagem de sucesso
+                return Ok($"O funcionário {id} foi deletado com sucesso!");
+            }
+
+            // Caso não seja, retorna um status code 404 - NotFound com a mensagem
+            return NotFound("Nenhum funcionário encontrado para o identificador informado");
+        }
+
+        /// <summary>
+        /// Lista todos os funcionários através de uma palavra-chave
+        /// </summary>
+        /// <param name="busca">Palavra-chave que será utilizada na busca</param>
+        /// <returns>Retorna uma lista de funcionários encontrados</returns>
+        /// dominio/api/Funcionarios/pesquisar/palavra-chave
+        /// 
+        [Authorize(Roles = "Comum")]
+        [HttpGet("buscar/{busca}")]
+        public IActionResult GetByName(string busca)
+        {
+            // Faz a chamada para o método .BuscarPorNome()
+            // Retorna a lista e um status code 200 - Ok
+            return Ok(_funcionarioRepository.BuscarPorNome(busca));
+        }
+
+        /// <summary>
+        /// Lista todos os funcionários com os nomes completos
+        /// </summary>
+        /// <returns>Retorna uma lista de funcionários</returns>
+        /// dominio/api/Funcionarios/nomescompletos
+        /// 
+        [Authorize(Roles = "Administrador")]
+        [HttpGet("nomescompletos")]
+        public IActionResult GetFullName()
+        {
+            // Faz a chamada para o método .ListarNomeCompleto            
+            // Retorna a lista e um status code 200 - Ok
+            return Ok(_funcionarioRepository.ListarNomeCompleto());
+        }
+
+        /// <summary>
+        /// Lista todos os funcionários de maneira ordenada pelo nome
+        /// </summary>
+        /// <param name="ordem">String que define a ordenação (crescente ou descrescente)</param>
+        /// <returns>Retorna uma lista ordenada de funcionários</returns>
+        /// dominio/api/Funcionarios/ordenacao/asc
+        /// 
+        [Authorize(Roles ="Administrador")]
+        [HttpGet("ordenacao/{ordem}")]
+        public IActionResult GetOrderBy(string ordem)
+        {
+            // Verifica se a ordenação atende aos requisitos
+            if (ordem != "ASC" && ordem != "DESC")
+            {
+                // Caso não, retorna um status code 404 - BadRequest com uma mensagem de erro
+                return BadRequest("Não é possível ordenar da maneira solicitada. Por favor, ordene por 'ASC' ou 'DESC'");
+            }
+
+            // Retorna a lista ordenada com um status code 200 - OK
+            return Ok(_funcionarioRepository.ListarOrdenado(ordem));
         }
     }
 }

@@ -1,14 +1,28 @@
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Senai.Peoples.WebApi.deps.json
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Senai.Peoples.WebApi.runtimeconfig.json
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Senai.Peoples.WebApi.runtimeconfig.dev.json
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Senai.Peoples.WebApi.dll
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.csprojAssemblyReference.cache
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.csproj.CoreCompileInputs.cache
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.RazorAssemblyInfo.cache
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.RazorAssemblyInfo.cs
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.AssemblyInfoInputs.cache
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.AssemblyInfo.cs
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.RazorTargetAssemblyInfo.cache
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Senai.Peoples.WebApi.pdb
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.dll
-C:\Users\51519136897\Documents\Funcionarios sprint2\Senai.Peoples.WebApi\Senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\Senai.Peoples.WebApi.pdb
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\Properties\launchSettings.json
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.deps.json
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.runtimeconfig.json
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.runtimeconfig.dev.json
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.dll
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.csprojAssemblyReference.cache
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorAssemblyInfo.cache
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorAssemblyInfo.cs
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.AssemblyInfoInputs.cache
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.AssemblyInfo.cs
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorTargetAssemblyInfo.cache
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.pdb
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.dll
+E:\Works\senai_132\senai-dev-1s2020\sprint-2-backend\exercicios\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.pdb
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.deps.json
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.runtimeconfig.json
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.runtimeconfig.dev.json
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.dll
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\bin\Debug\netcoreapp2.1\senai.Peoples.WebApi.pdb
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.csprojAssemblyReference.cache
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.csproj.CoreCompileInputs.cache
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorAssemblyInfo.cache
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorAssemblyInfo.cs
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.AssemblyInfoInputs.cache
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.AssemblyInfo.cs
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.RazorTargetAssemblyInfo.cache
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.dll
+C:\Users\51519136897\Documents\sprint2-backend\projetos\peoples\senai.Peoples.WebApi\senai.Peoples.WebApi\obj\Debug\netcoreapp2.1\senai.Peoples.WebApi.pdb
