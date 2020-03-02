@@ -8,6 +8,6 @@ namespace senai.Peoples.WebApi.Domains
     public class TipoUsuarioDomain
     {
         public int IdTipoUsuario { get; set; }
-        public string NomeTipoUsusario { get; set; }
+        public string NomeTipoUsuario { get; set; }
     }
 }

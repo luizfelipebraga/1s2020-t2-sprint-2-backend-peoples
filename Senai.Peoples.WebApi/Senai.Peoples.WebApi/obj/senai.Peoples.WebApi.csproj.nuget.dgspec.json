@@ -1,24 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Works\\senai_132\\senai-dev-1s2020\\sprint-2-backend\\exercicios\\peoples\\senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj": {}
+    "C:\\Users\\felipinho\\Desktop\\1s2020-t2-sprint-2-backend-peoples-LuizFelipeBraga\\Senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj": {}
   },
   "projects": {
-    "E:\\Works\\senai_132\\senai-dev-1s2020\\sprint-2-backend\\exercicios\\peoples\\senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj": {
+    "C:\\Users\\felipinho\\Desktop\\1s2020-t2-sprint-2-backend-peoples-LuizFelipeBraga\\Senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Works\\senai_132\\senai-dev-1s2020\\sprint-2-backend\\exercicios\\peoples\\senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj",
+        "projectUniqueName": "C:\\Users\\felipinho\\Desktop\\1s2020-t2-sprint-2-backend-peoples-LuizFelipeBraga\\Senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj",
         "projectName": "senai.Peoples.WebApi",
-        "projectPath": "E:\\Works\\senai_132\\senai-dev-1s2020\\sprint-2-backend\\exercicios\\peoples\\senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj",
-        "packagesPath": "C:\\Users\\saulo\\.nuget\\packages\\",
-        "outputPath": "E:\\Works\\senai_132\\senai-dev-1s2020\\sprint-2-backend\\exercicios\\peoples\\senai.Peoples.WebApi\\senai.Peoples.WebApi\\obj\\",
+        "projectPath": "C:\\Users\\felipinho\\Desktop\\1s2020-t2-sprint-2-backend-peoples-LuizFelipeBraga\\Senai.Peoples.WebApi\\senai.Peoples.WebApi\\senai.Peoples.WebApi.csproj",
+        "packagesPath": "C:\\Users\\felipinho\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\felipinho\\Desktop\\1s2020-t2-sprint-2-backend-peoples-LuizFelipeBraga\\Senai.Peoples.WebApi\\senai.Peoples.WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\saulo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\felipinho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp2.1"
@@ -47,6 +49,10 @@
               "version": "[2.1.1, )",
               "autoReferenced": true
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[2.1.1, )"
+            },
             "Microsoft.AspNetCore.Razor.Design": {
               "suppressParent": "All",
               "target": "Package",
@@ -65,6 +71,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.1, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[5.6.0, )"
             }
           },
           "imports": [

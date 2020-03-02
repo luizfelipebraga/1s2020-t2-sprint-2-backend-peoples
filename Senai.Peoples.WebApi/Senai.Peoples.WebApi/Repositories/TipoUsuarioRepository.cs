@@ -12,24 +12,22 @@ namespace senai.Peoples.WebApi.Repositories
     {
         private string stringConexao = "Data Source=DEV301\\SQLEXPRESS; initial catalog=Peoples; user Id=sa; pwd=sa@132";
 
-        public void Atualizar(int id, TipoUsuarioDomain usuarioAtualizado)
+        public void Atualizar(int id, TipoUsuarioDomain tipousuarioAtualizado)
         {
             // Declara a conexão passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
                 string queryUpdate = "UPDATE TipoUsuario " +
-                                     "SET NomeTipoUsuario = @Email, Senha = @Senha, IdTipoUsuario = @IdTipoUsuario " +
-                                     "WHERE IdUsuario = @ID";
+                                     "SET NomeTipoUsuario = @NomeTipoUsuario, IdTipoUsuario = @IdTipoUsuario " +
+                                     "WHERE IdTipoUsuario = @ID";
 
                 // Declara o SqlCommand passando o comando a ser executado e a conexão
                 using (SqlCommand cmd = new SqlCommand(queryUpdate, con))
                 {
                     // Passa os valores dos parâmetros
                     cmd.Parameters.AddWithValue("@ID", id);
-                    cmd.Parameters.AddWithValue("@Email", usuarioAtualizado.Email);
-                    cmd.Parameters.AddWithValue("@Senha", usuarioAtualizado.Senha);
-                    cmd.Parameters.AddWithValue("@IdTipoUsuario", usuarioAtualizado.IdTipoUsuario);
+                    cmd.Parameters.AddWithValue("@NomeTipoUsuario", tipousuarioAtualizado.NomeTipoUsuario);
 
                     // Abre a conexão com o banco de dados
                     con.Open();
@@ -40,14 +38,14 @@ namespace senai.Peoples.WebApi.Repositories
             }
         }
 
-        public UsuarioDomain BuscarPorId(int id)
+        public TipoUsuarioDomain BuscarPorId(int id)
         {
             // Declara a conexão passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada
-                string querySelectById = "SELECT IdUsuario, Email, Senha, IdUsuario FROM Usuarios" +
-                                        "WHERE IdUsuario = @ID";
+                string querySelectById = "SELECT * FROM TipoUsuarios" +
+                                        "WHERE IdTipoUsuario = @ID";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
@@ -68,26 +66,25 @@ namespace senai.Peoples.WebApi.Repositories
                     if (rdr.Read())
                     {
                         // Instancia um objeto funcionario 
-                        UsuarioDomain usuario = new UsuarioDomain
+                        TipoUsuarioDomain tipousuario = new TipoUsuarioDomain
                         {
                             // Atribui à propriedade IdFuncionario o valor da coluna "IdFuncionario" da tabela do banco
-                            IdUsuario = Convert.ToInt32(rdr["IdUsuario"])
+                            IdTipoUsuario = Convert.ToInt32(rdr["IdTipoUsuario"])
 
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
                             ,
-                            Email = rdr["Email"].ToString()
+                            NomeTipoUsuario = rdr["NomeTipoUsuario"].ToString()
 
                             // Atribui à propriedade Sobrenome o valor da coluna "Sobrenome" da tabela do banco
-                            ,
-                            Senha = rdr["Senha"].ToString()
+                            
 
                             // Atribui à propriedade DataNascimento o valor da coluna "DataNascimento" da tabela do banco
-                            ,
-                            IdTipoUsuario = Convert.ToInt32(rdr["TipoUsuario"])
+                            
+                            
                         };
 
                         // Retorna o funcionário buscado
-                        return usuario;
+                        return tipousuario;
                     }
 
                     // Caso o resultado da query não possua registros, retorna null
@@ -102,7 +99,7 @@ namespace senai.Peoples.WebApi.Repositories
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a query que será executada passando o valor como parâmetro
-                string queryDelete = "DELETE FROM Usuarios WHERE IdUsuario = @ID";
+                string queryDelete = "DELETE FROM TipoUsuarios WHERE IdUsuario = @ID";
 
                 // Declara o comando passando a query e a conexão
                 using (SqlCommand cmd = new SqlCommand(queryDelete, con))
@@ -119,16 +116,16 @@ namespace senai.Peoples.WebApi.Repositories
             }
         }
 
-        public List<UsuarioDomain> Listar()
+        public List<TipoUsuarioDomain> Listar()
         {
             // Cria uma lista funcionarios onde serão armazenados os dados
-            List<UsuarioDomain> Usuarios = new List<UsuarioDomain>();
+            List<TipoUsuarioDomain> TipoUsuarios = new List<TipoUsuarioDomain>();
 
             // Declara a SqlConnection passando a string de conexão
             using (SqlConnection con = new SqlConnection(stringConexao))
             {
                 // Declara a instrução a ser executada
-                string querySelectAll = "SELECT * from Usuarios";
+                string querySelectAll = "SELECT * from TipoUsuarios";
 
                 // Abre a conexão com o banco de dados
                 con.Open();
@@ -146,32 +143,26 @@ namespace senai.Peoples.WebApi.Repositories
                     while (rdr.Read())
                     {
                         // Instancia um objeto funcionario 
-                        UsuarioDomain usuario = new UsuarioDomain
+                        TipoUsuarioDomain tipousuario = new TipoUsuarioDomain
                         {
                             // Atribui à propriedade IdFuncionario o valor da coluna "IdFuncionario" da tabela do banco
-                            IdUsuario = Convert.ToInt32(rdr["IdUsuario"])
+                            IdTipoUsuario = Convert.ToInt32(rdr["IdUsuario"])
 
                             // Atribui à propriedade Nome o valor da coluna "Nome" da tabela do banco
                             ,
-                            Email = rdr["Email"].ToString()
-
-                            // Atribui à propriedade Sobrenome o valor da coluna "Sobrenome" da tabela do banco
-                            ,
-                            Senha = rdr["Senha"].ToString()
-
-                            // Atribui à propriedade DataNascimento o valor da coluna "DataNascimento" da tabela do banco
-                            ,
-                            IdTipoUsuario = Convert.ToInt32(rdr["IdTipoUsuario"])
+                            NomeTipoUsuario = rdr["NomeTipoUsuario"].ToString()
+                            
+                            
                         };
 
                         // Adiciona o funcionario criado à lista funcionarios
-                        Usuarios.Add(usuario);
+                        TipoUsuarios.Add(tipousuario);
                     }
                 }
             }
 
             // Retorna a lista de funcionarios
-            return Usuarios;
+            return TipoUsuarios;
         }
     }
 }
